@@ -8,7 +8,6 @@
 #solve 8-piece puzzle (3x3 grid) using Breadth First Search
 
 import numpy as np
-from collections import deque
 
 #State of the Node_i represented in 3x3 matrix
 #Ex: [123;456;780]
@@ -18,7 +17,7 @@ Parent_Node_Index_i=[]  #index of parent_node_i
 Initial_State=[]
 Goal_State=[[1,2,3],[4,5,6],[7,8,0]]
 
-queue=deque()              #nodes still to be explored
+queue=[]               #nodes still to be explored
 Visited_Nodes=[]
 # Visited_Nodes=list()        #nodes that have been visited already
 queue_start=[]          #1st node in queue
@@ -40,28 +39,28 @@ def BlankTileLocation(CurrentNode):
 def DeterminePossibleMoves(blank_x,blank_y):
     if(blank_x == 0 and blank_y == 0):
         return 1 #can move right or down
-    elif(blank_x== 0 and blank_y == 1):
+    if(blank_x== 0 and blank_y == 1):
         return 2 #can move left, right, or down
-    elif(blank_x == 0 and blank_y == 2):
+    if(blank_x == 0 and blank_y == 2):
         return 3 #can move left or down
-    elif(blank_x == 1 and blank_y == 0):
+    if(blank_x == 1 and blank_y == 0):
         return 4 #can move up, right, or down
-    elif(blank_x == 1 and blank_y == 1):
+    if(blank_x == 1 and blank_y == 1):
         return 5 #can move up, down, left, or right
-    elif(blank_x == 1 and blank_y == 2):
+    if(blank_x == 1 and blank_y == 2):
         return 6 #can move up, down, or left
-    elif(blank_x == 2 and blank_y == 0):
+    if(blank_x == 2 and blank_y == 0):
         return 7 #can move up or right
-    elif(blank_x == 2 and blank_y == 1):
+    if(blank_x == 2 and blank_y == 1):
         return 8 #can move left, right, or up
-    elif(blank_x == 2 and blank_y == 2):
+    if(blank_x == 2 and blank_y == 2):
         return 9 #can move left or up
     else:
         print("Blank cannot move!!")
 
 #Breadth First Search based on possible Moves of Blank Tile
 def BFSsearch(CurrentNode, move, blank_x, blank_y):
-    if(move == 1): #(0,0)
+    if(move == 1):
         down_node = ActionMoveDown(CurrentNode, blank_x, blank_y)
         right_node = ActionMoveRight(CurrentNode, blank_x, blank_y)
         new_node.append(down_node)
@@ -89,7 +88,7 @@ def BFSsearch(CurrentNode, move, blank_x, blank_y):
         new_node.append(up_node)
         new_node.append(down_node)
         return new_node
-    if(move == 5): #(1,1)
+    if(move == 5):
         right_node = ActionMoveRight(CurrentNode, blank_x, blank_y)
         up_node = ActionMoveUp(CurrentNode, blank_x, blank_y)
         down_node = ActionMoveDown(CurrentNode, blank_x, blank_y)
@@ -99,7 +98,7 @@ def BFSsearch(CurrentNode, move, blank_x, blank_y):
         new_node.append(down_node)
         new_node.append(left_node)
         return new_node
-    if(move == 6): #(1,2)
+    if(move == 6):
         left_node = ActionMoveLeft(CurrentNode, blank_x, blank_y)
         up_node = ActionMoveUp(CurrentNode, blank_x, blank_y)
         down_node = ActionMoveDown(CurrentNode, blank_x, blank_y)
@@ -121,7 +120,7 @@ def BFSsearch(CurrentNode, move, blank_x, blank_y):
         new_node.append(up_node)
         new_node.append(left_node)
         return new_node
-    if(move == 9): #(2,2)
+    if(move == 9):
         left_node = ActionMoveLeft(CurrentNode, blank_x, blank_y)
         up_node = ActionMoveUp(CurrentNode, blank_x, blank_y)
         new_node.append(left_node)
@@ -132,43 +131,57 @@ def BFSsearch(CurrentNode, move, blank_x, blank_y):
 
 def ActionMoveLeft(CurrentNode, blank_x, blank_y):
     NewNode = np.copy(CurrentNode)
-    tmp = NewNode[blank_x,blank_y]
-    NewNode[blank_x,blank_y] = NewNode[blank_x,blank_y-1]
-    NewNode[blank_x,blank_y-1] = tmp
+    temp1 = NewNode[blank_x,blank_y]
+    temp2 = NewNode[blank_x,blank_y-1]
+    NewNode[blank_x,blank_y-1] = temp1
+    NewNode[blank_x,blank_y] = temp2
     return NewNode
 
 def ActionMoveRight(CurrentNode, blank_x, blank_y):
     NewNode = np.copy(CurrentNode)
-    tmp = NewNode[blank_x, blank_y]
-    NewNode[blank_x, blank_y] = NewNode[blank_x, blank_y + 1]
-    NewNode[blank_x, blank_y + 1] = tmp
-    # temp1 = NewNode[blank_x,blank_y]
-    # temp2 = NewNode[blank_x, blank_y + 1]
-    # NewNode[blank_x, blank_y + 1] = temp1
-    # NewNode[blank_x, blank_y] = temp2
+    temp1 = NewNode[blank_x,blank_y]
+    temp2 = NewNode[blank_x,blank_y+1]
+    NewNode[blank_x,blank_y+1] = temp1
+    NewNode[blank_x,blank_y] = temp2
     return NewNode
 
 def ActionMoveUp(CurrentNode, blank_x, blank_y):
+    num_rows=3 #3x3 grid
     NewNode = np.copy(CurrentNode)
-    tmp = NewNode[blank_x,blank_y]
-    NewNode[blank_x,blank_y] = NewNode[blank_x - 1, blank_y]
-    NewNode[blank_x - 1, blank_y] = tmp
+    position=blank_x
+    print("x position", position)
+    
+    tmp = NewNode[position]
+    NewNode[position] = NewNode[position - num_rows]
+    NewNode[position - num_rows] = tmp
+    
     # temp1 = NewNode[blank_x,blank_y]
     # temp2 = NewNode[blank_x-1,blank_y]
     # NewNode[blank_x-1,blank_y] = temp1
     # NewNode[blank_x,blank_y] = temp2
     return NewNode
 
+# node_copy = curr_node.copy()
+    # position = node_copy.index(0)
+
+# if position not in range(0, grid_size):
+#         #can move up
+#         #swap with the upper row
+#         tmp = curr_node[position]
+#         node_copy[position] = node_copy[position - num_rows]
+#         node_copy[position - num_rows] = tmp
+#         moves.append(0)
+#         move_status=0
+#         return node_copy
+#     else:
+#         return None
+
 def ActionMoveDown(CurrentNode, blank_x, blank_y):
     NewNode = np.copy(CurrentNode)
-    # temp1 = NewNode[blank_x,blank_y]
-    # temp2 = NewNode[blank_x+1,blank_y]
-    # NewNode[blank_x+1,blank_y] = temp1
-    # NewNode[blank_x,blank_y] = temp2
-    tmp = NewNode[blank_x, blank_y]
-    NewNode[blank_x,blank_y] = NewNode[blank_x + 1, blank_y]
-    NewNode[blank_x + 1, blank_y] = tmp
-    
+    temp1 = NewNode[blank_x,blank_y]
+    temp2 = NewNode[blank_x+1,blank_y]
+    NewNode[blank_x+1,blank_y] = temp1
+    NewNode[blank_x,blank_y] = temp2
     return NewNode
 
 #Convert two nodes to a string so can compare
@@ -281,8 +294,7 @@ queue.append(Initial_State) #start by exploring initial_state
 count=0
 #iteratively BFS search all tiles/nodes while queue is not empty
 while (queue):
-    queue_start=queue.popleft() #FIFO; deque is faster than pop()
-    # queue_start=queue.pop(0) #FIFO
+    queue_start=queue.pop(0) #FIFO
     # queue_start=np.copy(queue.pop(0)) #remove/get first node in queue for BFS
     # print("Queue start is ", queue_start)
     # Visited_Nodes.append(queue_start)
@@ -331,6 +343,7 @@ while (queue):
       
     # print("count is ", count)
     count+=1
+    # x_prime=[]
     x_prime.clear()
     # del x_prime[:] #remove all nodes from x_prime so empty for next search
     
