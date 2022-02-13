@@ -17,15 +17,23 @@ import timeit
 Node_State_i=[]     #The state of node i  is represented by a 3 by 3 matrix
 Node_Index_i=[]         #index of node_i
 Parent_Node_Index_i=[]  #index of parent_node_i
-Initial_State=deque()
+# Initial_State=deque()
+Initial_State=list()
 Goal_State=deque([1,2,3,4,5,6,7,8,0])
+# Goal_State=[1,2,3,4,5,6,7,8,0]
 
 queue=deque()            #nodes still to be explored
-Visited_Nodes=deque()        #nodes that have been visited already   
-queue_start=deque()          #1st node in queue
-x_prime=deque()              #new nodes discovered after moving blank tile
-new_node=[]             #after shifting node for saving into x_prime
-BackTrackedPath=deque()       #to save backtracked path
+# Visited_Nodes=deque()        #nodes that have been visited already   
+# queue_start=deque()          #1st node in queue
+# x_prime=deque()              #new nodes discovered after moving blank tile
+# new_node=deque()             #after shifting node for saving into x_prime
+# BackTrackedPath=deque()       #to save backtracked path
+# queue=list()        #nodes still to be explored
+Visited_Nodes=list()            #nodes that have been visited already   
+queue_start=list()              #1st node in queue
+x_prime=list()                  #new nodes discovered after moving blank tile
+new_node=list()               #after shifting node for saving into x_prime
+BackTrackedPath=list()           #to save backtracked path
 
 #Breadth First Search based on possible Moves of Blank Tile
 def BFSsearch(CurrentNode):
@@ -215,7 +223,8 @@ def makeFiles(visited,last, path, p_index, n_index):
 #User input for initial State
 # Initial_State = GetInitialState()
 #---For testing---
-Initial_State=deque([1,4,7,0,2,8,3,5,6])
+# Initial_State=[1,4,7,0,2,8,3,5,6]
+Initial_State=[1,4,7,0,2,8,3,5,6]
 #---For testing---
 print("Initial State is ", Initial_State)
 queue.append(Initial_State) #start by exploring initial_state
@@ -229,6 +238,7 @@ count=0
 while (queue):
     # Node_State_i=queue.copy()
     queue_start=queue.popleft() #FIFO; deque is faster than pop(0)
+    # queue_start=np.copy(queue.popleft())
 
     print("Queue start is ", queue_start)
  
@@ -238,7 +248,7 @@ while (queue):
         print("Goal Reached!!")
         results=queue_start
         break #end while loop
-
+    
     #Secondary test to verify if goal state reached/found
     if queue_start==Goal_State: 
         print("Goal Reached!!")
@@ -264,6 +274,10 @@ while (queue):
             Visited_Nodes.append(branch)
             queue.append(branch)
             # print("Branch is ", branch)
+    
+    
+        
+    
     
             
     print("Visited nodes is now ", len(Visited_Nodes), " long")
