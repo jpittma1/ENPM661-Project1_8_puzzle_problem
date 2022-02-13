@@ -13,7 +13,7 @@ Recommended IDE: VSC
 
 Version of python : Python 3
 
-Libraries imported : numpy; deque
+Libraries imported : numpy; collections; deque
 
 Running Instructions: 
 1) Run code. 
