@@ -27,186 +27,117 @@ x_prime=deque()              #new nodes discovered after moving blank tile
 new_node=[]             #after shifting node for saving into x_prime
 BackTrackedPath=deque()       #to save backtracked path
 
-
 #Breadth First Search based on possible Moves of Blank Tile
 def BFSsearch(CurrentNode):
-    branches = list()
-
-    branches.append(ActionMoveUp(CurrentNode))
-    branches.append(ActionMoveDown(CurrentNode))
-    branches.append(ActionMoveLeft(CurrentNode))
-    branches.append(ActionMoveRight(CurrentNode))
-
-    #remove None nodes
-    b = [branch for branch in branches if branch is not None]
+    tmp=CurrentNode.copy()
+    move=tmp.index(0)
     
-    return b
-
-# def BFSsearch(CurrentNode):
-#     tmp=CurrentNode.copy()
-#     move=tmp.index(0)
-    
-#     if(move == 0): #(0,0)
-#         down_node = ActionMoveDown(CurrentNode)
-#         right_node = ActionMoveRight(CurrentNode)
-#         new_node.append(down_node)
-#         new_node.append(right_node)
-#         return new_node
-#     if(move == 1):
-#         right_node = ActionMoveRight(CurrentNode)
-#         left_node = ActionMoveLeft(CurrentNode)
-#         down_node = ActionMoveDown(CurrentNode)
-#         new_node.append(right_node)
-#         new_node.append(left_node)
-#         new_node.append(down_node)
-#         return new_node
-#     if(move == 2):
-#         down_node = ActionMoveDown(CurrentNode)
-#         left_node = ActionMoveLeft(CurrentNode)
-#         new_node.append(down_node)
-#         new_node.append(left_node)
-#         return new_node
-#     if(move == 3):
-#         right_node = ActionMoveRight(CurrentNode)
-#         up_node = ActionMoveUp(CurrentNode)
-#         down_node = ActionMoveDown(CurrentNode)
-#         new_node.append(right_node)
-#         new_node.append(up_node)
-#         new_node.append(down_node)
-#         return new_node
-#     if(move == 4): #(1,1)
-#         right_node = ActionMoveRight(CurrentNode)
-#         up_node = ActionMoveUp(CurrentNode)
-#         down_node = ActionMoveDown(CurrentNode)
-#         left_node = ActionMoveLeft(CurrentNode)
-#         new_node.append(right_node)
-#         new_node.append(up_node)
-#         new_node.append(down_node)
-#         new_node.append(left_node)
-#         return new_node
-#     if(move == 5): #(1,2)
-#         left_node = ActionMoveLeft(CurrentNode)
-#         up_node = ActionMoveUp(CurrentNode)
-#         down_node = ActionMoveDown(CurrentNode)
-#         new_node.append(left_node)
-#         new_node.append(up_node)
-#         new_node.append(down_node)
-#         return new_node
-#     if(move == 6):
-#         right_node = ActionMoveRight(CurrentNode)
-#         up_node = ActionMoveUp(CurrentNode)
-#         new_node.append(right_node)
-#         new_node.append(up_node)
-#         return new_node
-#     if(move == 7):
-#         right_node = ActionMoveRight(CurrentNode)
-#         up_node = ActionMoveUp(CurrentNode)
-#         left_node = ActionMoveLeft(CurrentNode)
-#         new_node.append(right_node)
-#         new_node.append(up_node)
-#         new_node.append(left_node)
-#         return new_node
-#     if(move == 8): #(2,2)
-#         left_node = ActionMoveLeft(CurrentNode)
-#         up_node = ActionMoveUp(CurrentNode)
-#         new_node.append(left_node)
-#         new_node.append(up_node)
-#         return new_node
-#     else:
-#         print("Error")
-
+    if(move == 0): #(0,0)
+        down_node = ActionMoveDown(CurrentNode)
+        right_node = ActionMoveRight(CurrentNode)
+        new_node.append(down_node)
+        new_node.append(right_node)
+        return new_node
+    if(move == 1):
+        right_node = ActionMoveRight(CurrentNode)
+        left_node = ActionMoveLeft(CurrentNode)
+        down_node = ActionMoveDown(CurrentNode)
+        new_node.append(right_node)
+        new_node.append(left_node)
+        new_node.append(down_node)
+        return new_node
+    if(move == 2):
+        down_node = ActionMoveDown(CurrentNode)
+        left_node = ActionMoveLeft(CurrentNode)
+        new_node.append(down_node)
+        new_node.append(left_node)
+        return new_node
+    if(move == 3):
+        right_node = ActionMoveRight(CurrentNode)
+        up_node = ActionMoveUp(CurrentNode)
+        down_node = ActionMoveDown(CurrentNode)
+        new_node.append(right_node)
+        new_node.append(up_node)
+        new_node.append(down_node)
+        return new_node
+    if(move == 4): #(1,1)
+        right_node = ActionMoveRight(CurrentNode)
+        up_node = ActionMoveUp(CurrentNode)
+        down_node = ActionMoveDown(CurrentNode)
+        left_node = ActionMoveLeft(CurrentNode)
+        new_node.append(right_node)
+        new_node.append(up_node)
+        new_node.append(down_node)
+        new_node.append(left_node)
+        return new_node
+    if(move == 5): #(1,2)
+        left_node = ActionMoveLeft(CurrentNode)
+        up_node = ActionMoveUp(CurrentNode)
+        down_node = ActionMoveDown(CurrentNode)
+        new_node.append(left_node)
+        new_node.append(up_node)
+        new_node.append(down_node)
+        return new_node
+    if(move == 6):
+        right_node = ActionMoveRight(CurrentNode)
+        up_node = ActionMoveUp(CurrentNode)
+        new_node.append(right_node)
+        new_node.append(up_node)
+        return new_node
+    if(move == 7):
+        right_node = ActionMoveRight(CurrentNode)
+        up_node = ActionMoveUp(CurrentNode)
+        left_node = ActionMoveLeft(CurrentNode)
+        new_node.append(right_node)
+        new_node.append(up_node)
+        new_node.append(left_node)
+        return new_node
+    if(move == 8): #(2,2)
+        left_node = ActionMoveLeft(CurrentNode)
+        up_node = ActionMoveUp(CurrentNode)
+        new_node.append(left_node)
+        new_node.append(up_node)
+        return new_node
+    else:
+        print("Error")
 
 def ActionMoveLeft(CurrentNode):
     NewNode = CurrentNode.copy()
     position = NewNode.index(0)
-    not_allowed=np.linspace(0,6, 3, dtype=int)
-    #if position not in [0, 3, 6]:
-    if position not in not_allowed:
-        tmp = NewNode[position]
-        NewNode[position] = NewNode[position - 1]
-        NewNode[position - 1] = tmp
-        return NewNode
-    else:
-        return None
-
+    
+    tmp = NewNode[position]
+    NewNode[position] = NewNode[position - 1]
+    NewNode[position - 1] = tmp
+    return NewNode
 
 def ActionMoveRight(CurrentNode):
     NewNode = CurrentNode.copy()
     position = NewNode.index(0)
-    
-    #if position not in [2, 5, 8]:
-    not_allowed = np.linspace(2, 8, 3, dtype = int)
-    
-    if position not in not_allowed:
-        tmp = NewNode[position]
-        NewNode[position] = NewNode[position + 1]
-        NewNode[position + 1] = tmp
-        return NewNode
-    else:
-        return None
 
+    tmp = NewNode[position]
+    NewNode[position] = NewNode[position + 1]
+    NewNode[position + 1] = tmp
+    return NewNode
 
 def ActionMoveUp(CurrentNode):
     NewNode = CurrentNode.copy()
     position = NewNode.index(0)
-    
-    if position not in range(0, 3):
-        tmp = NewNode[position]
-        NewNode[position] = NewNode[position - 3]
-        NewNode[position - 3] = tmp
-        return NewNode
-    else:
-        return None
 
+    tmp = NewNode[position]
+    NewNode[position] = NewNode[position - 3]
+    NewNode[position - 3] = tmp
+    return NewNode
+
+# To move "down", will slide the position to be 3 indexes to right
+# ---so will go from position 3 (0,1) to 6 which is cell (0,2)
 def ActionMoveDown(CurrentNode):
     NewNode = CurrentNode.copy()
     position = NewNode.index(0)
 
-    if position not in range(6, 9):
-        tmp = NewNode[position]
-        NewNode[position] = NewNode[position + 3]
-        NewNode[position + 3] = tmp
-        return NewNode
-    else:
-        return None
-
-# def ActionMoveLeft(CurrentNode):
-#     NewNode = CurrentNode.copy()
-#     position = NewNode.index(0)
-    
-#     tmp = NewNode[position]
-#     NewNode[position] = NewNode[position - 1]
-#     NewNode[position - 1] = tmp
-#     return NewNode
-
-# def ActionMoveRight(CurrentNode):
-#     NewNode = CurrentNode.copy()
-#     position = NewNode.index(0)
-
-#     tmp = NewNode[position]
-#     NewNode[position] = NewNode[position + 1]
-#     NewNode[position + 1] = tmp
-#     return NewNode
-
-# def ActionMoveUp(CurrentNode):
-#     NewNode = CurrentNode.copy()
-#     position = NewNode.index(0)
-
-#     tmp = NewNode[position]
-#     NewNode[position] = NewNode[position - 3]
-#     NewNode[position - 3] = tmp
-#     return NewNode
-
-#To move "down", will slide the position to be 3 indexes to right
-#---so will go from position 3 (0,1) to 6 which is cell (0,2)
-# def ActionMoveDown(CurrentNode):
-#     NewNode = CurrentNode.copy()
-#     position = NewNode.index(0)
-
-#     tmp = NewNode[position]
-#     NewNode[position] = NewNode[position + 3]
-#     NewNode[position + 3] = tmp
-#     return NewNode
+    tmp = NewNode[position]
+    NewNode[position] = NewNode[position + 3]
+    NewNode[position + 3] = tmp
+    return NewNode
 
 #backtracking to find path from initial to goal node
 def generate_path(start, end, pathTaken):
@@ -309,8 +240,9 @@ while (queue):
         print("Goal Reached!!")
         results=queue_start
         break #end while loop
-    
-    if queue_start==Goal_State:
+
+    #Secondary test to verify if goal state reached/found
+    if queue_start==Goal_State: 
         print("Goal Reached!!")
         results=queue_start
         break #end while loop
@@ -341,7 +273,7 @@ while (queue):
     # print("count is ", count)
     count+=1
     x_prime.clear()
-    del x_prime[:] #remove all nodes from x_prime so empty for next search
+    # del x_prime[:] #remove all nodes from x_prime so empty for next search
     
 print("while loop ended...Generating Path..")
 stop = timeit.default_timer()
