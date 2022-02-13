@@ -224,8 +224,6 @@ queue.append(Initial_State) #start by exploring initial_state
 start = timeit.default_timer()
 
 
-
-
 count=0
 #iteratively BFS search all tiles/nodes while queue is not empty
 while (queue):
