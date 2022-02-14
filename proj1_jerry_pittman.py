@@ -191,26 +191,13 @@ def GetInitialState():
 def makeFiles(visited, last, path, p_index, n_index):
     #Visited=Visited_Nodes, last=results
     # path=pathway, p_index=Parent_Node_Index_i, n_index=Node_Index_i
+    
     #"nodePath.txt" for storing path
     f = open("Nodepath.txt",'w')
     
-    #convert from column-wise matrix to list
-    # for i in range(len(path)):
-    # for i in path:
-    #     step = i
-    # str1 = " " 
+    #convert list to String
     listToStr = ' '.join([str(elem) for elem in path])
-        # traverse in the string  
-    # for ele in path: 
-    #     str1 += ele 
-        # cell2 = path[i][0][1]
-        # cell3 = path[i][0][2]
-        # cell4 = path[i][1][0]
-        # cell5 = path[i][1][1]
-        # cell6 = path[i][1][2]
-        # cell7 = path[i][2][0]
-        # cell8 = path[i][2][1]
-        # cell9 = path[i][2][2]
+    
     f.write(listToStr)
     f.write("\n")
     
@@ -224,6 +211,7 @@ def makeFiles(visited, last, path, p_index, n_index):
         f2.write(str(n_index[row]))
         f2.write("\t")
         f2.write(str(p_index[row]))
+        # print("p_index ",p_index[row], ", n_index ", n_index[row])
     f2.close()
     
     #Nodes.txt" for storing all explored states/nodes
@@ -231,6 +219,7 @@ def makeFiles(visited, last, path, p_index, n_index):
     
     for visit in range(len(visited)):
         f3.write(str(visited[visit]))
+        # print("Nodes visited ",visited[visit])
     f3.close()
 
 #User input for initial State
@@ -349,5 +338,6 @@ pathway=generate_path(Initial_State, results, BackTrackedPath)
 print("Parent node Index is ", Parent_Node_Index_i, ", and child index is ", Node_Index_i)
 print("Pathway is ", pathway)
 
+print("Making .txt files..")
 makeFiles(Visited_Nodes, results, pathway, Parent_Node_Index_i, Node_Index_i)
-
+print("Program complete.")
