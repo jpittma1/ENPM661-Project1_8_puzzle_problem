@@ -12,6 +12,7 @@ import numpy as np
 from collections import deque
 import copy
 import timeit
+import os.path
 
 #State of the Node_i represented in 3x3 matrix
 #Ex: [123;456;780]
@@ -193,7 +194,9 @@ def makeFiles(visited, last, path, p_index, n_index):
     # path=pathway, p_index=Parent_Node_Index_i, n_index=Node_Index_i
     
     #"nodePath.txt" for storing path
-    f = open("Nodepath.txt",'w')
+    save_path='/home/jerry/Desktop/umd/enpm661/Project1/ENPM661-Project1_8_puzzle_problem'
+    name1=os.path.join(save_path,"NodePath.txt")
+    f = open(name1,'w')
     
     #convert list to String
     
@@ -205,19 +208,21 @@ def makeFiles(visited, last, path, p_index, n_index):
     f.close()
     
     #NodesInfo.txt" for storing parents and children
-    f2=open('NodesInfo.txt','w')
+    name2=os.path.join(save_path,'NodesInfo.txt')
+    f2=open(name2,'w')
     f2.write("Node_index\tParent_Node_index\n")
     
     for row in range(len(path)):
         f2.write(str(n_index[row]))
-        f2.write("\t\t")
+        f2.write("\t\t\t")
         f2.write(str(p_index[row]))
         f2.write("\n")
         # print("p_index ",p_index[row], ", n_index ", n_index[row])
     f2.close()
     
     #Nodes.txt" for storing all explored states/nodes
-    f3=open('Nodes.txt','w')
+    name3=os.path.join(save_path,'Nodes.txt')
+    f3=open(name3,'w')
     
     for visit in range(len(visited)):
         f3.write(str(visited[visit]))
