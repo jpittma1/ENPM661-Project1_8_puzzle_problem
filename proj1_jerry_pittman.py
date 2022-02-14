@@ -7,12 +7,10 @@
 #Project #1
 #solve 8-piece puzzle (3x3 grid) using Breadth First Search
 
-from xml.etree.ElementTree import TreeBuilder
 import numpy as np
 from collections import deque
 import copy
 import timeit
-import os.path
 
 #State of the Node_i represented in 3x3 matrix
 #Ex: [123;456;780]
@@ -21,17 +19,10 @@ Node_Index_i=[]         #index of node_i
 Parent_Node_Index_i=[]  #index of parent_node_i
 Node_Index_i.append(1)
 Parent_Node_Index_i.append(0)
-# Initial_State=deque()
+
 Initial_State=[]
-# Goal_State=deque([1,2,3,4,5,6,7,8,0])
 Goal_State=[1,2,3,4,5,6,7,8,0]
 
-# queue=deque()            #nodes still to be explored
-# Visited_Nodes=deque()        #nodes that have been visited already   
-# queue_start=deque()          #1st node in queue
-# x_prime=deque()              #new nodes discovered after moving blank tile
-# new_node=deque()             #after shifting node for saving into x_prime
-# BackTrackedPath=deque()       #to save backtracked path
 queue=[]                      #nodes still to be explored
 Visited_Nodes=[]            #nodes that have been visited already   
 queue_start=[]              #1st node in queue
@@ -141,7 +132,7 @@ def ActionMoveUp(CurrentNode):
     return NewNode
 
 # To move "down", will slide the position to be 3 indexes to right
-# ---so will go from position 3 (0,1) to 6 which is cell (0,2)
+# ---so will go from position 3 (0,1) to 6 which is cell (1,2)
 def ActionMoveDown(CurrentNode):
     NewNode = CurrentNode.copy()
     position = NewNode.index(0)
@@ -194,9 +185,7 @@ def makeFiles(visited, last, path, p_index, n_index):
     # path=pathway, p_index=Parent_Node_Index_i, n_index=Node_Index_i
     
     #"nodePath.txt" for storing path
-    save_path='/home/jerry/Desktop/umd/enpm661/Project1/ENPM661-Project1_8_puzzle_problem'
-    name1=os.path.join(save_path,"NodePath.txt")
-    f = open(name1,'w')
+    f = open("NodePath.txt",'w')
     
     #convert list to String
     
@@ -208,8 +197,7 @@ def makeFiles(visited, last, path, p_index, n_index):
     f.close()
     
     #NodesInfo.txt" for storing parents and children
-    name2=os.path.join(save_path,'NodesInfo.txt')
-    f2=open(name2,'w')
+    f2=open('NodesInfo.txt','w')
     f2.write("Node_index\tParent_Node_index\n")
     
     for row in range(len(path)):
@@ -221,8 +209,7 @@ def makeFiles(visited, last, path, p_index, n_index):
     f2.close()
     
     #Nodes.txt" for storing all explored states/nodes
-    name3=os.path.join(save_path,'Nodes.txt')
-    f3=open(name3,'w')
+    f3=open('Nodes.txt','w')
     
     for visit in range(len(visited)):
         f3.write(str(visited[visit]))
@@ -232,9 +219,11 @@ def makeFiles(visited, last, path, p_index, n_index):
 
 #User input for initial State
 # Initial_State = GetInitialState()
+
 #------For testing---
 # Initial_State=[2,3,5,7,4,8,1,0,6]
-Initial_State=[1,4,7,0,2,8,3,5,6]
+Initial_State=[1,4,7,2,5,8,3,6,0]
+# Initial_State=[1,2,3,5,0,8,7,4,6]
 #--------For testing---
 
 print("Initial State is ", Initial_State)
@@ -247,16 +236,12 @@ start = timeit.default_timer()
 count=0
 #iteratively BFS search all tiles/nodes while queue is not empty
 while (queue):
-# while (count<700):
-    # Node_State_i=queue.copy()
-    queue_start=queue.pop(0)
-    # queue_start=queue.popleft() #FIFO; deque is faster than pop(0)
+# while (count<5):
+    queue_start=queue.pop(0) #FIFO
     # queue_start=np.copy(queue.popleft())
 
     # print("Queue start is ", queue_start)
     # print("Goal state is ", Goal_State)
- 
-    # Visited_Nodes.append(queue_start)
     
     if np.array_equal(queue_start, Goal_State):
         print("Goal Reached!!")
@@ -271,7 +256,7 @@ while (queue):
     
     
     # Finds Blank tile location then perform BFS based on 
-    # possible moves in that location location
+    #     possible moves in that location location
     x_prime=BFSsearch(queue_start)
     # print("BFS Search found ", len(x_prime), "nodes to test")
     # print("x_prime is ", x_prime)
@@ -298,12 +283,11 @@ while (queue):
     #     # else:
     #     #     print("A visited Node @", branch) 
     
- 
+    #verify if new nodes discovered have been explored
     for i in range(len(x_prime)):
         # y = False
         z=False
         # print("i is ", i)
-        # print("visited Nodes length" ,len(Visited_Nodes))
         for j in range(len(Visited_Nodes)):
             z = np.array_equal(np.array(x_prime[i]), np.array(Visited_Nodes[j]))       #if same, then True (have visited)
             # print("Branch is ", x_prime[i])
@@ -311,7 +295,7 @@ while (queue):
             if(z == False):
             # if(x_prime[i] != Visited_Nodes[j]):
                 # print("New value of X'")
-                # y=False
+                y=False
                 break
         # print("Y in i loop is ", y)
         if(z == False):
@@ -328,6 +312,7 @@ while (queue):
     
     if len(Visited_Nodes)>np.math.factorial(9):
         print("Algorithm failed to find solution!!")
+        print("Try a new initial state...")
         results=Goal_State
         break
     
@@ -337,12 +322,12 @@ while (queue):
     x_prime.clear()
     # del x_prime[:] #remove all nodes from x_prime so empty for next search
     
-print("while loop ended...Generating Path..")
+print("BFS search Complete...Generating Path...")
 stop = timeit.default_timer()
 print("That search took ", stop-start, " seconds")
 
 pathway=generate_path(Initial_State, results, BackTrackedPath)
-print("Parent node Index is ", Parent_Node_Index_i, ", and child index is ", Node_Index_i)
+# print("Parent node Index is ", Parent_Node_Index_i, ", and child index is ", Node_Index_i)
 print("Pathway is ", pathway)
 
 print("Making .txt files..")

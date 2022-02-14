@@ -13,7 +13,7 @@ Recommended IDE: VSC
 
 Version of python : Python 3
 
-Libraries imported : numpy; timeit; copy; os.path
+Libraries imported : numpy; timeit; copy
 
 Running Instructions: 
 1) Run code. 
