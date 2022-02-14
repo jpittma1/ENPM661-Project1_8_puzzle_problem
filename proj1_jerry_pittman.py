@@ -18,8 +18,10 @@ import timeit
 Node_State_i=[]     #The state of node i  is represented by a 3 by 3 matrix
 Node_Index_i=[]         #index of node_i
 Parent_Node_Index_i=[]  #index of parent_node_i
+Node_Index_i.append(0)
+Parent_Node_Index_i.append(0)
 # Initial_State=deque()
-Initial_State=list()
+Initial_State=[]
 # Goal_State=deque([1,2,3,4,5,6,7,8,0])
 Goal_State=[1,2,3,4,5,6,7,8,0]
 
@@ -29,12 +31,12 @@ Goal_State=[1,2,3,4,5,6,7,8,0]
 # x_prime=deque()              #new nodes discovered after moving blank tile
 # new_node=deque()             #after shifting node for saving into x_prime
 # BackTrackedPath=deque()       #to save backtracked path
-queue=list()                  #nodes still to be explored
-Visited_Nodes=list()            #nodes that have been visited already   
-queue_start=list()              #1st node in queue
-x_prime=list()                  #new nodes discovered after moving blank tile
-new_node=list()               #after shifting node for saving into x_prime
-BackTrackedPath=list()           #to save backtracked path
+queue=[]                      #nodes still to be explored
+Visited_Nodes=[]            #nodes that have been visited already   
+queue_start=[]              #1st node in queue
+x_prime=[]                  #new nodes discovered after moving blank tile
+new_node=[]                 #after shifting node for saving into x_prime
+BackTrackedPath=[]           #to save backtracked path
 
 #Breadth First Search based on possible Moves of Blank Tile
 def BFSsearch(CurrentNode):
@@ -155,19 +157,17 @@ def generate_path(start, end, pathTaken):
     pathBackwards = []
     path=[]
     pathBackwards.append(end)
-    Parent_Node_Index_i+=1
+    # Parent_Node_Index_i+=1
     for i in range(len(pathTaken)):
-        Parent_Node_Index_i+=1
+        Parent_Node_Index_i.append(i+1)
         for j in range(len(pathTaken)):
             if ((np.array_equal(pathTaken[i], pathBackwards[j][0]) )==False):
-            # if isVisited(pathTaken[i],pathBackwards[j][0])==False:
                 pathBackwards.append(pathTaken[j][1])
-                Node_Index_i+=1
+                Node_Index_i.append(j+1)
                 break
             
         # Verifying if reached Initial_State yet
         if np.array_equal(start,pathTaken[j][1]):
-        # if compareLists(start,pathTaken[j][1])==True:
             break
     
     #reverse path so goes start to goal
@@ -186,24 +186,34 @@ def GetInitialState():
     total = row1 + row2 + row3
     # print("total is ", total)
     # return [row1 ,row2, row3]
-    return deque(total)
+    return total
 
-def makeFiles(visited,last, path, p_index, n_index):
+def makeFiles(visited, last, path, p_index, n_index):
+    #Visited=Visited_Nodes, last=results
+    # path=pathway, p_index=Parent_Node_Index_i, n_index=Node_Index_i
     #"nodePath.txt" for storing path
     f = open("Nodepath.txt",'w')
     
     #convert from column-wise matrix to list
-    for i in range(len(path)):
-        cell1 = path[i][0][0]
-        cell2 = path[i][0][1]
-        cell3 = path[i][0][2]
-        cell4 = path[i][1][0]
-        cell5 = path[i][1][1]
-        cell6 = path[i][1][2]
-        cell7 = path[i][2][0]
-        cell8 = path[i][2][1]
-        cell9 = path[i][2][2]
-        f.write("\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n "  %(cell1,cell2,cell3,cell4,cell5,cell6,cell7,cell8,cell9))
+    # for i in range(len(path)):
+    # for i in path:
+    #     step = i
+    # str1 = " " 
+    listToStr = ' '.join([str(elem) for elem in path])
+        # traverse in the string  
+    # for ele in path: 
+    #     str1 += ele 
+        # cell2 = path[i][0][1]
+        # cell3 = path[i][0][2]
+        # cell4 = path[i][1][0]
+        # cell5 = path[i][1][1]
+        # cell6 = path[i][1][2]
+        # cell7 = path[i][2][0]
+        # cell8 = path[i][2][1]
+        # cell9 = path[i][2][2]
+    f.write(listToStr)
+    f.write("\n")
+    
     f.close()
     
     #NodesInfo.txt" for storing parents and children
@@ -211,22 +221,25 @@ def makeFiles(visited,last, path, p_index, n_index):
     f2.write("Node_index\tParent_Node_index")
     
     for row in range(len(path)):
-        f2.write(n_index[row],"\t",p_index[row])
+        f2.write(str(n_index[row]))
+        f2.write("\t")
+        f2.write(str(p_index[row]))
     f2.close()
     
     #Nodes.txt" for storing all explored states/nodes
     f3=open('Nodes.txt','w')
     
     for visit in range(len(visited)):
-        f3.write(visited[visit])
+        f3.write(str(visited[visit]))
     f3.close()
 
 #User input for initial State
 # Initial_State = GetInitialState()
-#---For testing---
-# Initial_State=[1,4,7,0,2,8,3,5,6]
+#------For testing---
+# Initial_State=[2,3,5,7,4,8,1,0,6]
 Initial_State=[1,4,7,0,2,8,3,5,6]
-#---For testing---
+#--------For testing---
+
 print("Initial State is ", Initial_State)
 queue.append(Initial_State) #start by exploring initial_state
 # print("queue is ", queue)
@@ -268,7 +281,7 @@ while (queue):
     
     #Save Parent and Child Nodes
     for node in range(len(x_prime)):
-        tmp=list()
+        tmp=[]
         # print("node", node)
         # print("x+prime[node]", x_prime[node])
         tmp.append(x_prime[node]) #children
@@ -280,35 +293,15 @@ while (queue):
     # for branch in x_prime:
     #     # print("Branch is ", branch)
     #     # print("Visited_Nodes are ", Visited_Nodes)
+    #     # print(branch not in Visited_Nodes)
     #     if branch not in Visited_Nodes:
     #         Visited_Nodes.append(branch)
     #         queue.append(branch)
-            # print("Branch is ", branch)
+    #         # print("Branch is ", branch)
+    #     # else:
+    #     #     print("A visited Node @", branch) 
     
-    
-    # for i in range(len(x_prime)):
-    #     y = False
-    #     # print("i is ", i)
-    #     # print("visited Nodes length" ,len(Visited_Nodes))
-    #     for j in range(len(Visited_Nodes)):
-            # y = np.array_equal(x_prime[i], Visited_Nodes[j])       #if same, then True (have visited)
-    #         # print("np array equal is ", np.array_equal(x_prime[i], Visited_Nodes[j]))
-    #         # print("j is ", j)
-    #         # print("y of ", i, ", ",j, " loop is ", y)
-    #         # print("Branch is ", x_prime[i])
-    #         # print("Visit[j] is ",Visited_Nodes[j])
-            
-    #         if(y == False):
-    #             # print("New value of X'")
-    #             break
-    #     # print("Y in i loop is ", y)
-    #     if(y == False):
-    #         Visited_Nodes.append(x_prime[i])   # In case the new node hasn't been explored storage is Virtual_Node
-    #         queue.append(x_prime[i])
-    #         # print("queue is now ",queue)
-    #     else:
-    #         print("Finally visited Node!! @", x_prime[i])
-            
+ 
     for i in range(len(x_prime)):
         y = False
         # z=False
@@ -322,7 +315,6 @@ while (queue):
             # print("Branch is ", x_prime[i])
             # print("Visit[j] is ",Visited_Nodes[j])
             if(x_prime[i] != Visited_Nodes[j]):
-            # if(x_prime[i] != Visited_Nodes[j] or z==False):
                 # print("New value of X'")
                 y=False
                 break
@@ -332,11 +324,18 @@ while (queue):
             queue.append(x_prime[i])
             # print("queue is now ",queue)
         else:
-            print("Finally a visited Node!! @", x_prime[i])                
+            y=True
+            print("A visited Node @", x_prime[i])                
     
             
     print("Visited nodes is now ", len(Visited_Nodes), " long")
-      
+    
+    if len(Visited_Nodes)>np.math.factorial(3):
+        print("Algorithm failed to find solution!!")
+        results=Goal_State
+        break
+    
+    
     # print("count is ", count)
     count+=1
     x_prime.clear()
@@ -344,11 +343,11 @@ while (queue):
     
 print("while loop ended...Generating Path..")
 stop = timeit.default_timer()
-print("That search took ", stop-start)
+print("That search took ", stop-start, " seconds")
 
 pathway=generate_path(Initial_State, results, BackTrackedPath)
 print("Parent node Index is ", Parent_Node_Index_i, ", and child index is ", Node_Index_i)
+print("Pathway is ", pathway)
 
-
-makeFiles(Visited_Nodes, results, pathway)
+makeFiles(Visited_Nodes, results, pathway, Parent_Node_Index_i, Node_Index_i)
 
