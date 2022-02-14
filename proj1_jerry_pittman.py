@@ -8,7 +8,6 @@
 #solve 8-piece puzzle (3x3 grid) using Breadth First Search
 
 import numpy as np
-from collections import deque
 import copy
 import timeit
 
@@ -32,72 +31,96 @@ BackTrackedPath=[]           #to save backtracked path
 
 #Breadth First Search based on possible Moves of Blank Tile
 def BFSsearch(CurrentNode):
-    tmp=CurrentNode.copy()
+    tmp=copy.deepcopy(CurrentNode)
     move=tmp.index(0)
     
     if(move == 0): #(0,0)
-        down_node = ActionMoveDown(CurrentNode)
-        right_node = ActionMoveRight(CurrentNode)
+        # down_node = ActionMoveDown(CurrentNode)
+        # right_node = ActionMoveRight(CurrentNode)
+        down_node = ActionMoveDown(tmp)
+        right_node = ActionMoveRight(tmp)
         new_node.append(down_node)
         new_node.append(right_node)
         return new_node
     if(move == 1):
-        right_node = ActionMoveRight(CurrentNode)
-        left_node = ActionMoveLeft(CurrentNode)
-        down_node = ActionMoveDown(CurrentNode)
+        # right_node = ActionMoveRight(CurrentNode)
+        # left_node = ActionMoveLeft(CurrentNode)
+        # down_node = ActionMoveDown(CurrentNode)
+        right_node = ActionMoveRight(tmp)
+        left_node = ActionMoveLeft(tmp)
+        down_node = ActionMoveDown(tmp)
         new_node.append(right_node)
         new_node.append(left_node)
         new_node.append(down_node)
         return new_node
     if(move == 2):
-        down_node = ActionMoveDown(CurrentNode)
-        left_node = ActionMoveLeft(CurrentNode)
+        # down_node = ActionMoveDown(CurrentNode)
+        # left_node = ActionMoveLeft(CurrentNode)
+        down_node = ActionMoveDown(tmp)
+        left_node = ActionMoveLeft(tmp)
         new_node.append(down_node)
         new_node.append(left_node)
         return new_node
     if(move == 3):
-        right_node = ActionMoveRight(CurrentNode)
-        up_node = ActionMoveUp(CurrentNode)
-        down_node = ActionMoveDown(CurrentNode)
+        # right_node = ActionMoveRight(CurrentNode)
+        # up_node = ActionMoveUp(CurrentNode)
+        # down_node = ActionMoveDown(CurrentNode)
+        right_node = ActionMoveRight(tmp)
+        up_node = ActionMoveUp(tmp)
+        down_node = ActionMoveDown(tmp)
         new_node.append(right_node)
         new_node.append(up_node)
         new_node.append(down_node)
         return new_node
     if(move == 4): #(1,1)
-        right_node = ActionMoveRight(CurrentNode)
-        up_node = ActionMoveUp(CurrentNode)
-        down_node = ActionMoveDown(CurrentNode)
-        left_node = ActionMoveLeft(CurrentNode)
+        # right_node = ActionMoveRight(CurrentNode)
+        # up_node = ActionMoveUp(CurrentNode)
+        # down_node = ActionMoveDown(CurrentNode)
+        # left_node = ActionMoveLeft(CurrentNode)
+        right_node = ActionMoveRight(tmp)
+        up_node = ActionMoveUp(tmp)
+        down_node = ActionMoveDown(tmp)
+        left_node = ActionMoveLeft(tmp)
         new_node.append(right_node)
         new_node.append(up_node)
         new_node.append(down_node)
         new_node.append(left_node)
         return new_node
     if(move == 5): #(1,2)
-        left_node = ActionMoveLeft(CurrentNode)
-        up_node = ActionMoveUp(CurrentNode)
-        down_node = ActionMoveDown(CurrentNode)
+        # left_node = ActionMoveLeft(CurrentNode)
+        # up_node = ActionMoveUp(CurrentNode)
+        # down_node = ActionMoveDown(CurrentNode)
+        left_node = ActionMoveLeft(tmp)
+        up_node = ActionMoveUp(tmp)
+        down_node = ActionMoveDown(tmp)
         new_node.append(left_node)
         new_node.append(up_node)
         new_node.append(down_node)
         return new_node
     if(move == 6):
-        right_node = ActionMoveRight(CurrentNode)
-        up_node = ActionMoveUp(CurrentNode)
+        # right_node = ActionMoveRight(CurrentNode)
+        # up_node = ActionMoveUp(CurrentNode)
+        right_node = ActionMoveRight(tmp)
+        up_node = ActionMoveUp(tmp)
         new_node.append(right_node)
         new_node.append(up_node)
         return new_node
     if(move == 7):
-        right_node = ActionMoveRight(CurrentNode)
-        up_node = ActionMoveUp(CurrentNode)
-        left_node = ActionMoveLeft(CurrentNode)
+        # right_node = ActionMoveRight(CurrentNode)
+        # up_node = ActionMoveUp(CurrentNode)
+        # left_node = ActionMoveLeft(CurrentNode)
+        right_node = ActionMoveRight(tmp)
+        up_node = ActionMoveUp(tmp)
+        left_node = ActionMoveLeft(tmp)
         new_node.append(right_node)
         new_node.append(up_node)
         new_node.append(left_node)
         return new_node
     if(move == 8): #(2,2)
-        left_node = ActionMoveLeft(CurrentNode)
-        up_node = ActionMoveUp(CurrentNode)
+        # left_node = ActionMoveLeft(CurrentNode)
+        # up_node = ActionMoveUp(CurrentNode)
+        left_node = ActionMoveLeft(tmp)
+        up_node = ActionMoveUp(tmp)
         new_node.append(left_node)
         new_node.append(up_node)
         return new_node
