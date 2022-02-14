@@ -319,7 +319,7 @@ while (queue):
             
     print("Visited nodes is now ", len(Visited_Nodes), " long")
     
-    if len(Visited_Nodes)>np.math.factorial(3):
+    if len(Visited_Nodes)>np.math.factorial(9):
         print("Algorithm failed to find solution!!")
         results=Goal_State
         break
