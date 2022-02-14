@@ -7,6 +7,7 @@
 #Project #1
 #solve 8-piece puzzle (3x3 grid) using Breadth First Search
 
+from xml.etree.ElementTree import TreeBuilder
 import numpy as np
 from collections import deque
 import copy
@@ -19,16 +20,16 @@ Node_Index_i=[]         #index of node_i
 Parent_Node_Index_i=[]  #index of parent_node_i
 # Initial_State=deque()
 Initial_State=list()
-Goal_State=deque([1,2,3,4,5,6,7,8,0])
-# Goal_State=[1,2,3,4,5,6,7,8,0]
+# Goal_State=deque([1,2,3,4,5,6,7,8,0])
+Goal_State=[1,2,3,4,5,6,7,8,0]
 
-queue=deque()            #nodes still to be explored
+# queue=deque()            #nodes still to be explored
 # Visited_Nodes=deque()        #nodes that have been visited already   
 # queue_start=deque()          #1st node in queue
 # x_prime=deque()              #new nodes discovered after moving blank tile
 # new_node=deque()             #after shifting node for saving into x_prime
 # BackTrackedPath=deque()       #to save backtracked path
-# queue=list()        #nodes still to be explored
+queue=list()                  #nodes still to be explored
 Visited_Nodes=list()            #nodes that have been visited already   
 queue_start=list()              #1st node in queue
 x_prime=list()                  #new nodes discovered after moving blank tile
@@ -236,11 +237,14 @@ start = timeit.default_timer()
 count=0
 #iteratively BFS search all tiles/nodes while queue is not empty
 while (queue):
+# while (count<700):
     # Node_State_i=queue.copy()
-    queue_start=queue.popleft() #FIFO; deque is faster than pop(0)
+    queue_start=queue.pop(0)
+    # queue_start=queue.popleft() #FIFO; deque is faster than pop(0)
     # queue_start=np.copy(queue.popleft())
 
-    print("Queue start is ", queue_start)
+    # print("Queue start is ", queue_start)
+    # print("Goal state is ", Goal_State)
  
     # Visited_Nodes.append(queue_start)
     
@@ -260,24 +264,75 @@ while (queue):
     # possible moves in that location location
     x_prime=BFSsearch(queue_start)
     # print("BFS Search found ", len(x_prime), "nodes to test")
+    # print("x_prime is ", x_prime)
     
     #Save Parent and Child Nodes
     for node in range(len(x_prime)):
-        tmp=[]
+        tmp=list()
+        # print("node", node)
+        # print("x+prime[node]", x_prime[node])
         tmp.append(x_prime[node]) #children
         tmp.append(queue_start) #parent\
         BackTrackedPath.append(tmp)
+        # print("backTrackedPath", BackTrackedPath)
     
     #verify if new nodes discovered have been explored
-    for branch in x_prime:
-        if branch not in Visited_Nodes:
-            Visited_Nodes.append(branch)
-            queue.append(branch)
+    # for branch in x_prime:
+    #     # print("Branch is ", branch)
+    #     # print("Visited_Nodes are ", Visited_Nodes)
+    #     if branch not in Visited_Nodes:
+    #         Visited_Nodes.append(branch)
+    #         queue.append(branch)
             # print("Branch is ", branch)
     
     
-        
-    
+    # for i in range(len(x_prime)):
+    #     y = False
+    #     # print("i is ", i)
+    #     # print("visited Nodes length" ,len(Visited_Nodes))
+    #     for j in range(len(Visited_Nodes)):
+            # y = np.array_equal(x_prime[i], Visited_Nodes[j])       #if same, then True (have visited)
+    #         # print("np array equal is ", np.array_equal(x_prime[i], Visited_Nodes[j]))
+    #         # print("j is ", j)
+    #         # print("y of ", i, ", ",j, " loop is ", y)
+    #         # print("Branch is ", x_prime[i])
+    #         # print("Visit[j] is ",Visited_Nodes[j])
+            
+    #         if(y == False):
+    #             # print("New value of X'")
+    #             break
+    #     # print("Y in i loop is ", y)
+    #     if(y == False):
+    #         Visited_Nodes.append(x_prime[i])   # In case the new node hasn't been explored storage is Virtual_Node
+    #         queue.append(x_prime[i])
+    #         # print("queue is now ",queue)
+    #     else:
+    #         print("Finally visited Node!! @", x_prime[i])
+            
+    for i in range(len(x_prime)):
+        y = False
+        # z=False
+        # print("i is ", i)
+        # print("visited Nodes length" ,len(Visited_Nodes))
+        for j in range(len(Visited_Nodes)):
+            # z = np.array_equal(x_prime[i], Visited_Nodes[j])       #if same, then True (have visited)
+            # print("np array equal is ", np.array_equal(x_prime[i], Visited_Nodes[j]))
+            # print("j is ", j)
+            # print("y of ", i, ", ",j, " loop is ", y)
+            # print("Branch is ", x_prime[i])
+            # print("Visit[j] is ",Visited_Nodes[j])
+            if(x_prime[i] != Visited_Nodes[j]):
+            # if(x_prime[i] != Visited_Nodes[j] or z==False):
+                # print("New value of X'")
+                y=False
+                break
+        # print("Y in i loop is ", y)
+        if(y == False):
+            Visited_Nodes.append(x_prime[i])   # In case the new node hasn't been explored storage is Virtual_Node
+            queue.append(x_prime[i])
+            # print("queue is now ",queue)
+        else:
+            print("Finally a visited Node!! @", x_prime[i])                
     
             
     print("Visited nodes is now ", len(Visited_Nodes), " long")
