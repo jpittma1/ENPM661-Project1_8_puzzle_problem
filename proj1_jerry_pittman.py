@@ -18,7 +18,7 @@ import timeit
 Node_State_i=[]     #The state of node i  is represented by a 3 by 3 matrix
 Node_Index_i=[]         #index of node_i
 Parent_Node_Index_i=[]  #index of parent_node_i
-Node_Index_i.append(0)
+Node_Index_i.append(1)
 Parent_Node_Index_i.append(0)
 # Initial_State=deque()
 Initial_State=[]
@@ -163,7 +163,7 @@ def generate_path(start, end, pathTaken):
         for j in range(len(pathTaken)):
             if ((np.array_equal(pathTaken[i], pathBackwards[j][0]) )==False):
                 pathBackwards.append(pathTaken[j][1])
-                Node_Index_i.append(j+1)
+                Node_Index_i.append(j+2)
                 break
             
         # Verifying if reached Initial_State yet
@@ -196,21 +196,23 @@ def makeFiles(visited, last, path, p_index, n_index):
     f = open("Nodepath.txt",'w')
     
     #convert list to String
-    listToStr = ' '.join([str(elem) for elem in path])
     
-    f.write(listToStr)
-    f.write("\n")
+    f.writelines("%s\n" % str(move) for move in path)
+    # listToStr = ' '.join([str(elem) for elem in path])
+    # f.write(list2Str)
+    # f.write("\n")
     
     f.close()
     
     #NodesInfo.txt" for storing parents and children
     f2=open('NodesInfo.txt','w')
-    f2.write("Node_index\tParent_Node_index")
+    f2.write("Node_index\tParent_Node_index\n")
     
     for row in range(len(path)):
         f2.write(str(n_index[row]))
-        f2.write("\t")
+        f2.write("\t\t")
         f2.write(str(p_index[row]))
+        f2.write("\n")
         # print("p_index ",p_index[row], ", n_index ", n_index[row])
     f2.close()
     
@@ -219,6 +221,7 @@ def makeFiles(visited, last, path, p_index, n_index):
     
     for visit in range(len(visited)):
         f3.write(str(visited[visit]))
+        f3.write("\n")
         # print("Nodes visited ",visited[visit])
     f3.close()
 
@@ -292,29 +295,28 @@ while (queue):
     
  
     for i in range(len(x_prime)):
-        y = False
-        # z=False
+        # y = False
+        z=False
         # print("i is ", i)
         # print("visited Nodes length" ,len(Visited_Nodes))
         for j in range(len(Visited_Nodes)):
-            # z = np.array_equal(x_prime[i], Visited_Nodes[j])       #if same, then True (have visited)
-            # print("np array equal is ", np.array_equal(x_prime[i], Visited_Nodes[j]))
-            # print("j is ", j)
-            # print("y of ", i, ", ",j, " loop is ", y)
+            z = np.array_equal(np.array(x_prime[i]), np.array(Visited_Nodes[j]))       #if same, then True (have visited)
             # print("Branch is ", x_prime[i])
             # print("Visit[j] is ",Visited_Nodes[j])
-            if(x_prime[i] != Visited_Nodes[j]):
+            if(z == False):
+            # if(x_prime[i] != Visited_Nodes[j]):
                 # print("New value of X'")
-                y=False
+                # y=False
                 break
         # print("Y in i loop is ", y)
-        if(y == False):
+        if(z == False):
+        # if(y == False):
             Visited_Nodes.append(x_prime[i])   # In case the new node hasn't been explored storage is Virtual_Node
             queue.append(x_prime[i])
             # print("queue is now ",queue)
-        else:
-            y=True
-            print("A visited Node @", x_prime[i])                
+        # else:
+        #     y=True
+        #     print("A visited Node @", x_prime[i])                
     
             
     print("Visited nodes is now ", len(Visited_Nodes), " long")
