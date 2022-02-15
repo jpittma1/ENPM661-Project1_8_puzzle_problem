@@ -10,6 +10,8 @@ Instructions to run the Code
 
 File Name : proj1_jerry_pittman.py
 
+Github: https://github.com/jpittma1/ENPM661-Project1_8_puzzle_problem.git
+
 Recommended IDE: VSC 
 
 Version of python : Python 3

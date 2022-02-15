@@ -209,8 +209,6 @@ def GetInitialState():
     print("Enter values for Row 3, separated by spaces: ")
     row3=[int(x) for x in input().split()]
     total = row1 + row2 + row3
-    # print("total is ", total)
-    # return [row1 ,row2, row3]
     return total
 
 def makeFiles(visited, last, path, p_index, n_index):
@@ -255,9 +253,7 @@ start = timeit.default_timer()
 
 #iteratively BFS search all tiles/nodes while queue is not empty
 while (queue):
-# while (count<5):
     Node_State_i=queue.pop(0) #FIFO
-
 
     # print("Queue start is ", Node_State_i)
     # print("Goal state is ", Goal_State)
