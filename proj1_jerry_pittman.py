@@ -19,16 +19,25 @@ Parent_Node_Index_i=[]  #index of parent_node_i
 Node_Index_i.append(1)
 Parent_Node_Index_i.append(0)
 
-Initial_State=[]
-# Goal_State=[1,2,3,4,5,6,7,8,0]
-Goal_State =[1,4,7,2,5,8,3,6,0]
-
 queue=[]                      #nodes still to be explored
 Visited_Nodes=[]            #nodes that have been visited already   
-queue_start=[]              #1st node in queue
 x_prime=[]                  #new nodes discovered after moving blank tile
 new_node=[]                 #after shifting node for saving into x_prime
 BackTrackedPath=[]           #to save backtracked path
+
+# Initial_State=[]
+#------Initial State Test Cases---
+#5:52PM Announcment
+# Initial_State= [1,3,5,2,6,7,8,4,0]
+# Initial_State= [1,2,3,4,8,6,7,5,0]
+
+#6:32PM Announcement
+# Initial_State=[1,4,7,5,0,8,2,3,6]
+# Initial_State= [4,7,0,1,2,8,3,5,6]
+#-----Initial State Test Cases--------
+
+# Goal_State=[1,2,3,4,5,6,7,8,0]  #5:52PM announcement
+Goal_State =[1,4,7,2,5,8,3,6,0]   #6:32PM announcement
 
 #Breadth First Search based on possible Moves of Blank Tile
 def BFSsearch(CurrentNode):
@@ -148,49 +157,47 @@ def generate_path(start, end, pathTaken):
     global Parent_Node_Index_i
     global Node_Index_i
     
-    #pathTaken~29000 long
     temp_path = []
     temp_path.append(end)
     
-    # pathTaken[j][0] is child
-    # pathTaken[j][1] is parent
+    # pathTaken[j][0] is child Node
+    # pathTaken[j][1] is parent Node
     
-    #is temp_path same as the child?
-    #      if not, add parent to path. increment child index
-    
+    c=2 #Next Node Index is 2
     for i in range(len(pathTaken)):
-        Node_Index_i.append(i+2) #increment child index
-        # Parent_Node_Index_i.append(i+1) #increment parent index
-        # print ("i is ", i)
+        Node_Index_i.append(c)      #increment child index
+        
         for j in range(len(pathTaken)):
-            k=pathTaken[j][1]
-            # print("j is ", j)
-            # print("Child is ", pathTaken[j][0])
-            # print("parent is ", pathTaken[j][1])
-            # print("last node of path is ", temp_path[i])
-            
+
             #compare last node of temp_path to child of pathway
-            if temp_path[i] != pathTaken[j][0]: #path vs child
+            if temp_path[i] == pathTaken[j][0]: #path vs child
                 temp_path.append(pathTaken[j][1]) #add parent to path
-                Parent_Node_Index_i.append(j+1) #increment parent index
-                # Node_Index_i.append(j+2) #increment child index
-                print("temp_path[i] is ", temp_path[i])
+
+                previousParent=Parent_Node_Index_i[-1] #last parent node index value
+                # print("Previous parent ", previousParent)
+
+                if pathTaken[j][1]!=pathTaken[j-1][1]:  #increment parent index if new parent
+                    Parent_Node_Index_i.append(previousParent+1)
+                else:
+                    Parent_Node_Index_i.append(previousParent)
+                # print("temp_path[i] is ", temp_path[i])
                 break
-        if k==start: #determine if parent is start
-        # if temp_path[i]==start: #determine if parent is start
+            
+        if temp_path[i]==start: #determine if parent is start
             break
+        c+=1
     
-    # print("temp_path final is ", temp_path)
-    print("Parent index is ", Parent_Node_Index_i)
-    print("Node index is ", Node_Index_i)
+    # print("pre-reversed_path is ", temp_path)
+    # print("Parent index is ", Parent_Node_Index_i)
+    # print("Node index is ", Node_Index_i)
     
     path=[]
     #reverse path so goes start to goal
-    # path=temp_path.reverse()
     for i in reversed(temp_path):
         path.append(i)
     
     # print("reversed path is ", path)
+    # print("length of path is ", len(path))
     
     return path
     
@@ -214,11 +221,7 @@ def makeFiles(visited, last, path, p_index, n_index):
     f = open("NodePath.txt",'w')
     
     #convert list to String
-    
     f.writelines("%s\n" % str(move) for move in path)
-    # listToStr = ' '.join([str(elem) for elem in path])
-    # f.write(list2Str)
-    # f.write("\n")
     
     f.close()
     
@@ -231,7 +234,6 @@ def makeFiles(visited, last, path, p_index, n_index):
         f2.write("\t\t\t")
         f2.write(str(p_index[row]))
         f2.write("\n")
-        # print("p_index ",p_index[row], ", n_index ", n_index[row])
     f2.close()
     
     #Nodes.txt" for storing all explored states/nodes
@@ -240,21 +242,10 @@ def makeFiles(visited, last, path, p_index, n_index):
     for visit in range(len(visited)):
         f3.write(str(visited[visit]))
         f3.write("\n")
-        # print("Nodes visited ",visited[visit])
     f3.close()
 
-#User input for initial State
-# Initial_State = GetInitialState()
-
-#------Initial State Test Cases---
-#5:52PM Announcment
-# Initial_State= [1,3,5,2,6,7,8,4,0]
-# Initial_State= [1,2,3,4,8,6,7,5,0]
-
-#6:32PM Announcement
-# Initial_State=[1,4,7,5,0,8,2,3,6]
-Initial_State= [4,7,0,1,2,8,3,5,6]
-#--------For testing---
+#--User input for initial State---
+Initial_State = GetInitialState()
 
 print("Initial State is ", Initial_State)
 queue.append(Initial_State) #start by exploring initial_state
@@ -262,32 +253,23 @@ queue.append(Initial_State) #start by exploring initial_state
 
 start = timeit.default_timer()
 
-
-count=0
 #iteratively BFS search all tiles/nodes while queue is not empty
 while (queue):
 # while (count<5):
-    queue_start=queue.pop(0) #FIFO
-    # queue_start=np.copy(queue.popleft())
+    Node_State_i=queue.pop(0) #FIFO
 
-    # print("Queue start is ", queue_start)
+
+    # print("Queue start is ", Node_State_i)
     # print("Goal state is ", Goal_State)
     
-    if np.array_equal(queue_start, Goal_State):
+    if np.array_equal(Node_State_i, Goal_State):
         print("Goal Reached!!")
-        results=queue_start
+        results=Node_State_i
         break #end while loop
-    
-    #Secondary test to verify if goal state reached/found
-    # if queue_start==Goal_State: 
-    #     print("Goal Reached!!")
-    #     results=queue_start
-    #     break #end while loop
-    
-    
+
     # Finds Blank tile location then perform BFS based on 
     #     possible moves in that location location
-    x_prime=BFSsearch(queue_start)
+    x_prime=BFSsearch(Node_State_i)
     # print("BFS Search found ", len(x_prime), "nodes to test")
     # print("x_prime is ", x_prime)
     
@@ -297,7 +279,7 @@ while (queue):
         # print("node", node)
         # print("x+prime[node]", x_prime[node])
         tmp.append(node)            #child
-        tmp.append(queue_start)     #parent
+        tmp.append(Node_State_i)     #parent
         BackTrackedPath.append(tmp)
         # print("backTrackedPath", BackTrackedPath)
     
@@ -310,46 +292,10 @@ while (queue):
             Visited_Nodes.append(branch)
             queue.append(branch)
             # print("Branch is ", branch)
-        # else:
-        #     print("Previously visited Node found @ ", branch) 
-    
-    #verify if new nodes discovered have been explored
-    # for i in range(len(x_prime)):
-    #     # y = False
-    #     z=False
-    #     # print("i is ", i)
-    #     for j in range(len(Visited_Nodes)):
-    #         z = np.array_equal(np.array(x_prime[i]), np.array(Visited_Nodes[j]))       #if same, then True (have visited)
-    #         # print("Branch is ", x_prime[i])
-    #         # print("Visit[j] is ",Visited_Nodes[j])
-    #         if(z == False):
-    #         # if(x_prime[i] != Visited_Nodes[j]):
-    #             # print("New value of X'")
-    #             # y=False
-    #             break
-    #     # print("Y in i loop is ", y)
-    #     if(z == False):
-    #     # if(y == False):
-    #         Visited_Nodes.append(x_prime[i])   # In case the new node hasn't been explored storage is Virtual_Node
-    #         queue.append(x_prime[i])
-    #         # print("queue is now ",queue)
-    #     # else:
-    #     #     print("A visited Node @", x_prime[i])                
-    
-            
+
     print("Visited nodes is ", len(Visited_Nodes), "long, and queue is ", len(queue))
-    
-    # if len(Visited_Nodes)>np.math.factorial(9):
-    #     print("Algorithm failed to find solution!!")
-    #     print("Try a new initial state...")
-    #     results=Goal_State
-    #     break
-    
-    
-    # print("count is ", count)
-    count+=1
+
     x_prime.clear()
-    # del x_prime[:] #remove all nodes from x_prime so empty for next search
     
 print("BFS search Complete...Generating Path...")
 stop = timeit.default_timer()
@@ -357,7 +303,6 @@ print("That search took ", stop-start, " seconds")
 
 # print("length of pathBackwards", len(BackTrackedPath))
 pathway=generate_path(Initial_State, results, BackTrackedPath)
-# print("Parent node Index is ", Parent_Node_Index_i, ", and child index is ", Node_Index_i)
 print("Pathway is ", pathway)
 
 print("Making .txt files..")

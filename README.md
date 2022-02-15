@@ -1,4 +1,5 @@
 # ENPM661-Project1_8_puzzle_problem
+Jerry Pittman, Jr. 117707120  jpittma1@umd.edu
 Breadth first solving of 8 puzzle problem using list data structure
 ENPM 661: Planning for Autonomous Robots Spring 2022.
 Project 1 - 8 PUZZLE PROBLEM
@@ -15,8 +16,10 @@ Version of python : Python 3
 
 Libraries imported : numpy; timeit; copy
 
+Prep: Goal State can be edited on line 40; Initial state is user inputted
+
 Running Instructions:
-Prep: Goal State can be edited on line 23; Initial state is user inputted
+
 1) Run code. 
 2) User inputs initial state matrix (3x3).
 3) Program compares initial state to goal state and solves using breadth first search (lists as data structure) and using queue functionality.
