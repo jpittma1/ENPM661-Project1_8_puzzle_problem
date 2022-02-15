@@ -15,7 +15,8 @@ Version of python : Python 3
 
 Libraries imported : numpy; timeit; copy
 
-Running Instructions: 
+Running Instructions:
+Prep: Goal State can be edited on line 23; Initial state is user inputted
 1) Run code. 
 2) User inputs initial state matrix (3x3).
 3) Program compares initial state to goal state and solves using breadth first search (lists as data structure) and using queue functionality.
